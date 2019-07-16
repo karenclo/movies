@@ -2,3 +2,4 @@
 .idea/
 .eggs/
 movies.egg-info/
+movies/__pycache__/
