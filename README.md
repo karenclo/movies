@@ -13,4 +13,21 @@ Corner Cases:
 - API returns error/timeout
 - Cast list is empty
 
+Final Answer: 38
+
+# Running Locally
+1. Clone and install the repo
+```
+git clone git@github.com:karenclo/movies.git
+cd movies
+pip install -e .
+```
+
+2. Run solution.py
+```
+cd movies
+python solution.py
+```
+
+
 

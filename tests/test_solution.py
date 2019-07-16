@@ -6,11 +6,11 @@ from movies import solution
 class TestSolution(unittest.TestCase):
 
     @patch('requests.get')
-    def test_get_ids_bad_response(self, requests_mock):
+    def test_get_titles_bad_response(self, requests_mock):
         requests_mock.status_code.return_value = 400
 
         with self.assertRaises(AssertionError):
-            solution.get_ids('http://url')
+            solution.get_titles('http://url')
 
     def test_get_actors_unsupported_type(self):
         with self.assertRaises(TypeError):
@@ -22,5 +22,7 @@ class TestSolution(unittest.TestCase):
 
         with self.assertRaises(AssertionError):
             solution.get_actors([1234], 'movie')
+
+
 
 

@@ -2,7 +2,7 @@ import requests
 from movies import constants
 
 
-def get_ids(discover_api):
+def get_titles(discover_api):
     """
     Get all movie or tv show ids given the movie db api
     Args:
@@ -35,8 +35,7 @@ def get_ids(discover_api):
 
         curr_page_results = response.json()['results']
 
-        for title in curr_page_results:
-            ids.append(title['id'])
+        ids += [title['id'] for title in curr_page_results]
 
     return ids
 
@@ -49,7 +48,7 @@ def get_actors(titles, api_type):
         api_type (str): movie or tv api to pull from
 
     Returns:
-        actors (list[int]): list of actor ids
+        actors (set{int}): set of actor ids
 
     """
 
@@ -68,10 +67,9 @@ def get_actors(titles, api_type):
 
         results = response.json()
 
-        cast_list = results['cast']
+        cast_list = results.get('cast', [])
 
-        for actor in cast_list:
-            actors.add(actor['id'])
+        actors = actors.union(set([actor['id'] for actor in cast_list]))
 
     return actors
 
@@ -82,14 +80,14 @@ def get_num_reoccurring_actors():
     Returns:
         (int): number of actors and actresses
     """
-    movie_titles = get_ids(constants.movie_api)
+    movie_titles = get_titles(constants.movie_api)
     movie_actors = get_actors(movie_titles, 'movie')
 
-    tv_titles = get_ids(constants.tv_api)
+    tv_titles = get_titles(constants.tv_api)
     tv_actors = get_actors(tv_titles, 'tv')
 
     return len(movie_actors & tv_actors)
 
 
 if __name__ == '__main__':
-    get_num_reoccurring_actors()
+    print(get_num_reoccurring_actors())
